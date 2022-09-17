@@ -1,4 +1,4 @@
-from flask import Flask,Response,jsonify, render_template ,logging,request
+from flask import Flask,render_template #Response,jsonify ,logging,request
 app = Flask(__name__)
 
 @app.route('/')
