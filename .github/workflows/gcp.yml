@@ -8,7 +8,7 @@ jobs:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: GCP_template
+      IMAGE_NAME: gcp_template
       PROJECT_ID: frenz-10676
     steps:
     - name: Checkout
