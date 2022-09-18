@@ -17,4 +17,4 @@ RUN pip install -r requirements.txt
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
 #CMD exec uvicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
