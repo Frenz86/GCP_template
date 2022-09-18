@@ -1,19 +1,30 @@
 import os
-from flask import Flask, request,render_template
+from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
-app = Flask(__name__)
-import warnings
-warnings.filterwarnings("ignore")
+app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
 
 @app.route('/')
-def home():
-    return render_template('index.html')
+def hello(request: Request):
+    """Return a friendly HTTP greeting."""
+    message = "It's running!"
 
-@app.route('/hello')
-def hello_world():
-    name = request.args.get('name', 'World')
-    return f'Hello {name}!'
+    """Get Cloud Run environment variables."""
+    service = os.environ.get('K_SERVICE', 'Unknown service')
+    revision = os.environ.get('K_REVISION', 'Unknown revision')
+
+    return templates.TemplateResponse('index.html', context={
+        "request": request,
+        "message": message,
+        "Service": service,
+        "Revision": revision})
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+    import uvicorn
+    server_port = int(os.environ.get('PORT', 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=server_port, log_level="info")
