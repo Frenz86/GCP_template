@@ -3,7 +3,7 @@ name: Build and Push Python Image to Google Cloud Platform
 on:
   push:
     branches: [ main ]
-jobs:
+steps:
   build-push-gcr:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
@@ -36,3 +36,10 @@ jobs:
         docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: ['run', 'deploy', 'IMAGE_NAME', '--image', 'gcr.io/$PROJECT_ID/IMAGE_NAME', '--region', 'us-central1', '--platform', 'managed','--port','80']
+  images:
+  - gcr.io/$PROJECT_ID/IMAGE_NAME:latest
