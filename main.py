@@ -5,8 +5,6 @@ from starlette.responses import JSONResponse
 import pandas as pd
 from pydantic import BaseModel
 import joblib
-import uvicorn
-import os
 
 import warnings
 warnings.filterwarnings("ignore")
