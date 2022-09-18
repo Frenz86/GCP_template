@@ -3,8 +3,6 @@ FROM python:3.10-slim
 # Allow statements and log messages to immediately appear in the Knative logs
 ENV PYTHONUNBUFFERED True
 
-ENV PORT 8080
-
 # Copy local code to the container image.
 COPY . /app
 WORKDIR /app
@@ -13,7 +11,6 @@ WORKDIR /app
 RUN python -m pip install --upgrade pip \
     && pip install --trusted-host pypi.python.org -r requirements.txt
 
-EXPOSE 8080
 
 # Run the web service on container startup. Here we use the gunicorn
 # webserver, with one worker process and 8 threads.
@@ -22,4 +19,4 @@ EXPOSE 8080
 #CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
 
 # As an example here we're running the web service with one worker on uvicorn.
-CMD exec uvicorn main:app --host 0.0.0.0 --port 8080 --workers 1 --threads 8 --timeout 0
+CMD ["uvicorn", "main:app", "--app-dir", "/app", "--host", "0.0.0.0", "--port", "8080"]
