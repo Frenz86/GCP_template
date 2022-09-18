@@ -38,5 +38,5 @@ jobs:
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
 
     # push CloudRun
-    - name: Build Docker Image
-      run: docker build -t $IMAGE_NAME:latest
+    #- name: Build Docker Image
+    #  run: docker push -t $IMAGE_NAME:latest
