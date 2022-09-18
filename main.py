@@ -1,29 +1,10 @@
 from fastapi import FastAPI, Request,Depends,HTTPException
-from fastapi.responses import StreamingResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
-from starlette.responses import JSONResponse
-import pandas as pd
+
 import uvicorn
-from pydantic import BaseModel
-import joblib
+
 import os 
 
-import warnings
-warnings.filterwarnings("ignore")
-
-classes = {
-    0: 'setosa',
-    1: 'versicolor',
-    2: 'virginica'
-}
-
-class Feature_type(BaseModel):
-    #description: Optional[str] = None questo è un campo opzionale
-    feature1 : float = 3.0
-    feature2 : float = 3.0
-    feature3 : float = 3.0
-    feature4 : float = 3.0
 
 app = FastAPI(title="API1", description="with FastAPI by Daniele Grotti", version="1.0")
 templates = Jinja2Templates(directory="templates")
