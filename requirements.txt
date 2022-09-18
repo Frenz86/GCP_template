@@ -1,3 +1,6 @@
-Flask
-Jinja2
+joblib
+uvicorn
+fastapi
+scikit-learn
 gunicorn
+pandas
