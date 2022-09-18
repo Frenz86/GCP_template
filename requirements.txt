@@ -2,5 +2,4 @@ joblib
 uvicorn
 fastapi
 scikit-learn
-gunicorn
 pandas

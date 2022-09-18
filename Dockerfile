@@ -17,4 +17,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
 #CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
-CMD exec uvicorn main:app --host 0.0.0.0 --port ${PORT} --workers 1 --threads 8
+
+# Run
+CMD ["python", "main.py"]

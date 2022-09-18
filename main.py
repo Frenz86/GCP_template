@@ -5,6 +5,8 @@ from starlette.responses import JSONResponse
 import pandas as pd
 from pydantic import BaseModel
 import joblib
+import uvicorn
+import os
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -62,3 +64,7 @@ async def predict_post(data: Feature_type):
         return JSONResponse(y_pred)
     except:
         raise HTTPException(status_code=404, detail="error") 
+
+## RUN!!!
+if __name__ == "__main__":
+    uvicorn.run(app, port=int(os.environ.get("PORT", 8000)), host="0.0.0.0")
