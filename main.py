@@ -7,6 +7,7 @@ import pandas as pd
 import uvicorn
 from pydantic import BaseModel
 import joblib
+import os 
 
 import warnings
 warnings.filterwarnings("ignore")
