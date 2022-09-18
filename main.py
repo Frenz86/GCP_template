@@ -28,10 +28,11 @@ class Feature_type(BaseModel):
 app = FastAPI(title="API1", description="with FastAPI by Daniele Grotti", version="1.0")
 templates = Jinja2Templates(directory="templates")
 
-@app.on_event("startup") #define event handlers (functions) that need to be executed before the application starts up
-def load_model():
-    global model
-    model = joblib.load("iris.pkl")
+# @app.on_event("startup") #define event handlers (functions) that need to be executed before the application starts up
+# def load_model():
+#     global model
+#     model = joblib.load("iris.pkl")
+model = None
 
 @app.get("/")
 def home(request: Request):
