@@ -7,6 +7,7 @@ jobs:
   build-push-gcr:
     name: Build and Push to GCP
     runs-on: ubuntu-latest
+    if :"contains(github.event.head_commit.message, 'deploy')"
     env:
       IMAGE_NAME: gcp_template
       PROJECT_ID: frenz-10676
