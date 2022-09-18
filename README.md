@@ -1,3 +1,3 @@
 # GCP_template
 
-  fdfdf
+  fdf
