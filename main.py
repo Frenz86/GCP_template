@@ -67,4 +67,4 @@ async def predict_post(data: Feature_type):
 
 ## RUN!!!
 if __name__ == "__main__":
-    uvicorn.run(app, port=int(os.environ.get("PORT", 8000)), host="0.0.0.0")
+    uvicorn.run(app, port=int(os.environ.get("PORT", 8080)), host="0.0.0.0")
