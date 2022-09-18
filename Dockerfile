@@ -10,11 +10,11 @@ COPY . /app
 WORKDIR /app
 
 # Install Python Requirements
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Run the web service on container startup. Here we use the gunicorn
 # webserver, with one worker process and 8 threads.
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
 #CMD exec uvicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", $PORT]
+CMD exec uvicorn main:app --host 0.0.0.0 --port ${PORT} --workers 1
