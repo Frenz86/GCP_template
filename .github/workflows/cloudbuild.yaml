@@ -12,7 +12,7 @@ jobs:
     env:
       IMAGE_NAME: gcp_template
       PROJECT_ID: frenz-10676
-      RUN_REGION: us-east1
+      RUN_REGION: us-central1
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -39,6 +39,6 @@ jobs:
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
 
-    - name: Deploy
-      run: |-
-        gcloud run deploy $IMAGE_NAME --image gcr.io/$PROJECT_ID/$IMAGE_NAME:latest --platform managed --region $RUN_REGION --allow-unauthenticated
+    #- name: Deploy
+    #  run: |-
+    #    gcloud run deploy $IMAGE_NAME --image gcr.io/$PROJECT_ID/$IMAGE_NAME:latest --platform managed --region $RUN_REGION --allow-unauthenticated
