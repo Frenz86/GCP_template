@@ -3,14 +3,15 @@ FROM python:3.10-slim
 # Allow statements and log messages to immediately appear in the Knative logs
 ENV PYTHONUNBUFFERED True
 
-ENV PORT 8080
+ENV PORT 8000
 
 # Copy local code to the container image.
 COPY . /app
 WORKDIR /app
 
 # Install Python Requirements
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m pip install --upgrade pip \
+    && pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Run the web service on container startup. Here we use the gunicorn
 # webserver, with one worker process and 8 threads.
