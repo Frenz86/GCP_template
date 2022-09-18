@@ -28,10 +28,10 @@ class Feature_type(BaseModel):
 app = FastAPI(title="API1", description="with FastAPI by Daniele Grotti", version="1.0")
 templates = Jinja2Templates(directory="templates")
 
-@app.on_event("startup") #define event handlers (functions) that need to be executed before the application starts up
-def load_model():
-    global model
-    model = joblib.load("iris.pkl")
+# @app.on_event("startup") #define event handlers (functions) that need to be executed before the application starts up
+# def load_model():
+#     global model
+#     model = joblib.load("iris.pkl")
 
 
 @app.get("/")
@@ -48,8 +48,8 @@ async def predict_get(data: Feature_type= Depends()):              # depends() i
         data.rename(columns=data.iloc[0], inplace = True)
         data= data.iloc[1:] #must have array
         
-        y_pred = list(map(lambda x: classes[x], model.predict(data).tolist()))[0]
-        return JSONResponse(y_pred)
+        #y_pred = list(map(lambda x: classes[x], model.predict(data).tolist()))[0]
+        return JSONResponse(data)
     except:
         raise HTTPException(status_code=404, detail="error")
 
