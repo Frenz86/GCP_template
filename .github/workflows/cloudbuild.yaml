@@ -39,9 +39,5 @@ jobs:
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
 
-     # Build and push image to Google Container Registry
-      - name: Build
-        run: gcloud builds submit --tag gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA
-
       - name: Deploy
         run: gcloud run deploy $IMAGE_NAME --image gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA --platform managed --region $RUN_REGION --allow-unauthenticated
