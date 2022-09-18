@@ -39,20 +39,6 @@ def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-
-@app.get("/predict", response_class=HTMLResponse)
-async def predict_get(data: Feature_type= Depends()):              # depends() input nelle celle
-    try:
-        data = pd.DataFrame(data)
-        data = data.T
-        data.rename(columns=data.iloc[0], inplace = True)
-        data= data.iloc[1:] #must have array
-        
-        #y_pred = list(map(lambda x: classes[x], model.predict(data).tolist()))[0]
-        return JSONResponse(data)
-    except:
-        raise HTTPException(status_code=404, detail="error")
-
 # @app.post("/predict", response_class=HTMLResponse)
 # #async def predict_post(data: Feature_type= Depends()):
 # async def predict_post(data: Feature_type):

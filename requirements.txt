@@ -2,3 +2,5 @@ fastapi
 uvicorn
 gunicorn
 Flask
+pandas
+joblib
