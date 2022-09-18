@@ -20,4 +20,4 @@ RUN python -m pip install --upgrade pip \
 #CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
 
 # As an example here we're running the web service with one worker on uvicorn.
-CMD exec uvicorn main:app --host 0.0.0.0 --port ${PORT} --workers 1 --threads 8 --timeout 0
+CMD exec uvicorn main:app --host 0.0.0.0 --port 8080 --workers 1 --threads 8 --timeout 0
