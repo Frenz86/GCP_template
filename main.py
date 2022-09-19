@@ -25,8 +25,10 @@ class Feature_type(BaseModel):
     feature3 : float = 3.0
     feature4 : float = 3.0
 
-
-model = joblib.load("iris.pkl")
+@app.on_event("startup") #define event handlers (functions) that need to be executed before the application starts up
+def load_model():
+    global model
+    model = joblib.load("iris.pkl")
 
 
 @app.get("/")

@@ -1,7 +1,7 @@
 name: Main
 env:
   PROJECT_ID: frenz-10676
-  SERVICE: testpipe2 # google run service name
+  SERVICE: pipe # google run service name
   REGION: us-central1
 
 on: # When do you want it to run
@@ -30,7 +30,10 @@ jobs: # Define jobs to run
       - name: Build and Push Container
         run: |-
           docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest .
           docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
+
       - name: Deploy to Cloud Run
         id: frenz
         uses: google-github-actions/deploy-cloudrun@v0.4.0
