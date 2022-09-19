@@ -16,7 +16,7 @@ jobs:
       RUN_REGION: us-central1
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@v0
@@ -36,10 +36,11 @@ jobs:
       env:
         GIT_TAG: v0.1.0
       run: |-
-        docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
-        docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+        docker tag $APP_ID:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+        docker tag $APP_ID:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
+        docker run 
 
     # Setup gcloud CLI and Deploy on CloudRun
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@main
@@ -48,9 +49,5 @@ jobs:
         service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
         project_id: ${{ secrets.PROJECT_ID }}
 
-        # Build and push image to Google Container Registry
-    - name: Build
-      run: gcloud builds submit --tag gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA
-
     - name: Deploy
-      run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$APP_ID:GITHUB_SHA --platform managed --region $RUN_REGION --allow-unauthenticated
+      run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$IMAGE_NAME:latest --platform managed --region $RUN_REGION --allow-unauthenticated
