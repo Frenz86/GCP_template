@@ -1,8 +1,6 @@
 from fastapi import FastAPI, Request,Depends,HTTPException
 from fastapi.templating import Jinja2Templates
-
 import uvicorn
-
 import os 
 
 
@@ -19,6 +17,10 @@ templates = Jinja2Templates(directory="templates")
 def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/hello")
+async def root():
+    return {"message": "Hello World"}
+    
 
 # @app.post("/predict", response_class=HTMLResponse)
 # #async def predict_post(data: Feature_type= Depends()):
