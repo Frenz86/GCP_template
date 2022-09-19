@@ -1,7 +1,7 @@
 name: Main
 env:
   PROJECT_ID: frenz-10676
-  SERVICE: myapp # google run service name
+  SERVICE: testpipeline # google run service name
   REGION: us-central1
 
 on: # When do you want it to run
