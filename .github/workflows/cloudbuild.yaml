@@ -1,7 +1,7 @@
 name: Main
 env:
   PROJECT_ID: frenz-10676
-  SERVICE: testpipeline # google run service name
+  SERVICE: testpipe # google run service name
   REGION: us-central1
 
 on: # When do you want it to run
@@ -29,7 +29,7 @@ jobs: # Define jobs to run
 
       - name: Build and Push Container
         run: |-
-          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest .
+          docker -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest .
           docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
           docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
           docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
