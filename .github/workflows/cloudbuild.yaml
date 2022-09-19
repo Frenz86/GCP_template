@@ -1,7 +1,7 @@
 name: Main
 env:
   PROJECT_ID: frenz-10676
-  SERVICE: testpipe # google run service name
+  SERVICE: testpipe2 # google run service name
   REGION: us-central1
 
 on: # When do you want it to run
@@ -38,6 +38,7 @@ jobs: # Define jobs to run
           service: ${{ env.SERVICE }}
           image: gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
           region: ${{ env.REGION }}
+          allow-unauthenticated: true
 
       - name: Show Output
         run: echo ${{ steps.frenz.outputs.url }}
