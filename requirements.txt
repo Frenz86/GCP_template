@@ -1,4 +1,6 @@
+joblib
 uvicorn
 fastapi
+scikit-learn
 gunicorn
-Flask
+pandas
