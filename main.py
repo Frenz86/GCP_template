@@ -2,8 +2,6 @@ from fastapi import FastAPI, Request,Depends,HTTPException
 from fastapi.templating import Jinja2Templates
 import uvicorn
 import os 
-from fastapi.responses import StreamingResponse
-import pandas as pd
 
 app = FastAPI(title="API1", description="with FastAPI by Daniele Grotti", version="1.0")
 templates = Jinja2Templates(directory="templates")
