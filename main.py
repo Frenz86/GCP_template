@@ -56,9 +56,18 @@ async def predict_get(data: Feature_type= Depends()):              # depends() i
     except:
         raise HTTPException(status_code=404, detail="error") 
 
-@app.post("/predict")
-def precit():
-    return {"classe": "iris"} 
+@app.post("/predict", response_class=HTMLResponse)
+#async def predict_post(data: Feature_type= Depends()):
+async def predict_post(data: Feature_type):
+    try:
+        data = pd.DataFrame(data).T
+        data.rename(columns=data.iloc[0], inplace = True)
+        data= data.iloc[1:] #must have array
+        y_pred = list(map(lambda x: classes[x], model.predict(data).tolist()))[0]
+        return JSONResponse(y_pred)
+    except:
+        raise HTTPException(status_code=404, detail="error") 
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app",host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
