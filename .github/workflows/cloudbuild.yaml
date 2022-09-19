@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, 'deploy')"
     env:
+      APP_ID: gcp_template
       IMAGE_NAME: gcp_template
       PROJECT_ID: frenz-10676
       RUN_REGION: us-central1
@@ -17,6 +18,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@v0
       with:
         service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
@@ -39,6 +41,11 @@ jobs:
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
         docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
 
-    #- name: Deploy
-    #  run: |-
-    #    gcloud run deploy $IMAGE_NAME --image gcr.io/$PROJECT_ID/$IMAGE_NAME:latest --platform managed --region $RUN_REGION --allow-unauthenticated
+      # Setup gcloud CLI and Deploy on CloudRun
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: "290.0.1"
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          project_id: ${{ secrets.PROJECT_ID }}
+      - name: Deploy
+        run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$APP_ID:latest --platform managed --region $RUN_REGION --allow-unauthenticated
