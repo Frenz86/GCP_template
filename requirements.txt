@@ -1,5 +1,6 @@
 joblib
 uvicorn
+Jinja2==3.1.2
 fastapi
 scikit-learn
 gunicorn
