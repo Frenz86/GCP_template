@@ -6,8 +6,8 @@ ENV PYTHONUNBUFFERED True
 ENV PORT 80
 
 # Copy local code to the container image.
-COPY . /src
-WORKDIR /src
+COPY . /app
+WORKDIR /app
 
 # Install Python Requirements
 RUN pip install -r requirements.txt
@@ -16,4 +16,5 @@ RUN pip install -r requirements.txt
 # webserver, with one worker process and 8 threads.
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
+#CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
+CMD exec uvicorn --port $PORT --host 0.0.0.0 main:app
