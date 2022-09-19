@@ -1,6 +1,7 @@
 # Python image to use.
 FROM python:3.10-slim
 
+ARG PORT
 # Set the working directory to /app
 WORKDIR /app
 
@@ -15,4 +16,6 @@ COPY . .
 
 # Run main.py when the container launches
 # CMD uvicorn main:app --host 0.0.0.0 --port $PORT
-CMD exec uvicorn --port $PORT --host 0.0.0.0 main:app
+#CMD exec uvicorn --port $PORT --host 0.0.0.0 main:app
+
+ENTRYPOINT ["uvicorn", "main:app", "--port", "$PORT"]
