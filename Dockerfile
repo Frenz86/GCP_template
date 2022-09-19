@@ -1,21 +1,19 @@
-# Python image to use.
-FROM python:3.10
+FROM python:3.10-slim
 
-# Set the working directory to /app
-WORKDIR /app
+# Allow statements and log messages to immediately appear in the Knative logs
+ENV PYTHONUNBUFFERED True
 
-# copy the requirements file used for dependencies
-COPY requirements.txt .
+ENV PORT 80
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy local code to the container image.
+COPY . /src
+WORKDIR /src
 
-# Copy the rest of the working directory contents into the container at /app
-COPY . .
+# Install Python Requirements
+RUN pip install -r requirements.txt
 
-# Run main.py when the container launches
-# CMD uvicorn main:app --host 0.0.0.0 --port $PORT
-# ARG PORT
-# ENTRYPOINT ["uvicorn", "main:app", "--port", "$PORT"]
-CMD exec uvicorn --port $PORT --host 0.0.0.0 main:app
-
+# Run the web service on container startup. Here we use the gunicorn
+# webserver, with one worker process and 8 threads.
+# For environments with multiple CPU cores, increase the number of workers
+# to be equal to the cores available.
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
