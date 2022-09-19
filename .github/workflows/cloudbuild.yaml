@@ -29,10 +29,11 @@ jobs: # Define jobs to run
 
       - name: Build and Push Container
         run: |-
-          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest .
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
           docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
       - name: Deploy to Cloud Run
-        id: gohibeesh
+        id: frenz
         uses: google-github-actions/deploy-cloudrun@v0.4.0
         with:
           service: ${{ env.SERVICE }}
@@ -40,4 +41,4 @@ jobs: # Define jobs to run
           region: ${{ env.REGION }}
 
       - name: Show Output
-        run: echo ${{ steps.gohibeesh.outputs.url }}
+        run: echo ${{ steps.frenz.outputs.url }}
