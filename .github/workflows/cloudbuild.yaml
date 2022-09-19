@@ -1,26 +1,60 @@
-# .github/workflows/deploy.yml
-name: Deploy to Cloud Run
-on:
-  push:
-    branches:
-      - main
+name: Main
+env:
+  PROJECT_ID: frenz-10676
+  SERVICE: myapp # google run service name
+  REGION: us-central1
 
-jobs:
+on: # When do you want it to run
+  push: # When pushed to master branch 
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs: # Define jobs to run
+
   build:
-    runs-on: ubuntu-latest
-    
-    steps:
-    # Build the container image
-    - uses: actions/checkout@v2
+    runs-on: ubuntu-latest # Define job-specific info
+    steps: # Define job steps
+      # Checks out project source code
+      - uses: actions/checkout@v2
+      # Sets up go based on the version
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+    # Lint the incoming code and validate that it meets project’s standards
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2.5.2
 
-    - name: 'gcr.io/cloud-builders/docker'
-      args: ['build', '-t', 'gcr.io/$PROJECT_ID/myapp', '.']
-    # Push the container image to Container Registry
-    - name: 'gcr.io/cloud-builders/docker'
-      args: ['push', 'gcr.io/$PROJECT_ID/myapp']
-    # Deploy container image to Cloud Run
-    - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-      entrypoint: gcloud
-      args: ['run', 'deploy', 'myapp', '--image', 'gcr.io/$PROJECT_ID/myapp', '--region', 'us-central1', '--platform', 'managed','--port','80']
-    images:
-    - gcr.io/$PROJECT_ID/myapp
+      - name: Build
+        run: go build -v ./...
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Sets up the gcloud cli with the credentials we previously created, and will be storing within Github as secrets.
+      - name: Setup Cloud cli
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+          export_default_credentials: true
+        # Configure Docker with Credentials
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker
+
+      - name: Build and Push Container
+        run: |-
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+      - name: Deploy to Cloud Run
+        id: gohibeesh
+        uses: google-github-actions/deploy-cloudrun@v0.4.0
+        with:
+          service: ${{ env.SERVICE }}
+          image: gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
+          region: ${{ env.REGION }}
+
+      - name: Show Output
+        run: echo ${{ steps.gohibeesh.outputs.url }}
