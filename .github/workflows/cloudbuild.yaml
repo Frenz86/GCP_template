@@ -48,4 +48,4 @@ jobs:
         service_account_key: ${{ secrets.SERVICE_ACCOUNT_KEY }}
         project_id: ${{ secrets.PROJECT_ID }}
     - name: Deploy
-      run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$APP_ID:latest --platform managed --region $RUN_REGION --allow-unauthenticated
+      run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$APP_ID:GITHUB_SHA --platform managed --region $RUN_REGION --allow-unauthenticated
