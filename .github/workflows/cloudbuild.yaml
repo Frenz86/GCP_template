@@ -6,7 +6,7 @@ env:
 
 on: # When do you want it to run
   push: # When pushed to master branch 
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs: # Define jobs to run
