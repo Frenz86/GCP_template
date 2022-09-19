@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <title>Machine Learning App</title>
-  <meta name="description" content="MMachine Learning App">
+  <meta name="description" content="Machine Learning App">
 </head>
 <body>
   <div id="root"></div>
@@ -35,7 +35,7 @@ sepal_width  = st.slider('Select sepal_width', 0.0, 10.0,2.0,0.1)
 petal_length = st.slider('Select petal_length', 0.0, 10.0,4.0,0.1)
 petal_width  = st.slider('Select petal_width', 0.0, 10.0,2.0,0.1)
 
-gcpurl = "https://testpipeline-zermazgrxa-uc.a.run.app"
+gcpurl = "https://pipe-zermazgrxa-uc.a.run.app"
 base = gcpurl +"/predict"
 url = f"?feature1={sepal_length}&feature2={sepal_width}&feature3={petal_length}&feature4={petal_width}"
 base_url = base + url
