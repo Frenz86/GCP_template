@@ -10,24 +10,6 @@ on: # When do you want it to run
   workflow_dispatch:
 
 jobs: # Define jobs to run
-
-  build:
-    runs-on: ubuntu-latest # Define job-specific info
-    steps: # Define job steps
-      # Checks out project source code
-      - uses: actions/checkout@v2
-      # Sets up go based on the version
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.16
-    # Lint the incoming code and validate that it meets project’s standards
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v2.5.2
-
-      - name: Build
-        run: go build -v ./...
-
   deploy:
     runs-on: ubuntu-latest
     steps:
