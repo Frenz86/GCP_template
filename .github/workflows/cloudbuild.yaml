@@ -60,7 +60,7 @@ jobs: # Define jobs to run
             --allow-unauthenticated
 
 
-        #gcloud run deploy --image IMAGE_URL --no-cpu-throttling ##always cpu responding
+        #gcloud run deploy --image IMAGE_URL --no-cpu-throttling ##always cpu responding 
 
       - name: Show Output
         run: echo ${{ steps.frenz.outputs.url }}
