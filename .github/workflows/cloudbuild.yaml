@@ -27,6 +27,7 @@ jobs: # Define jobs to run
       - name: Authorize Docker push
         run: gcloud auth configure-docker
 
+      #Build and push Container to Docker Registry
       - name: Build and Push Container
         run: |-
           docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} .
@@ -34,31 +35,15 @@ jobs: # Define jobs to run
           docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
           docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
 
-      # - name: Deploy to Cloud Run
-      #   id: frenz
-      #   uses: google-github-actions/deploy-cloudrun@v0.4.0
-      #   with:
-      #     service: ${{ env.SERVICE }}
-      #     image: gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}
-      #     region: ${{ env.REGION }}
-      #     allow-unauthenticated: true
-
-
-      - name: 'Setup Cloud SDK'
-        uses: google-github-actions/deploy-cloudrun@v0.4.0
-        with:
-          project_id: '${{ env.PROJECT_ID }}'
-          service_account_key: '${{ secrets.SERVICE_ACCOUNT_KEY }}'
-
+      #Deploy Container to CloudRun
       - name: 'Deploy to Cloud Run'
         run: |-
           gcloud run deploy ${{ env.SERVICE }} \
             --region ${{ env.REGION }} \
-            --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}  \
+            --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
             --platform managed \
-            --no-cpu-throttling \
-            --allow-unauthenticated
-
+            --allow-unauthenticated \
+            --no-cpu-throttling
 
         #gcloud run deploy --image IMAGE_URL --no-cpu-throttling ##always cpu responding 
 
