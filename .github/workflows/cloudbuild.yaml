@@ -43,9 +43,11 @@ jobs: # Define jobs to run
             --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} \
             --platform managed \
             --allow-unauthenticated \
-            --no-cpu-throttling
+            --no-cpu-throttling \
+            --trigger-http \
+            --min-instances 1
 
-        #gcloud run deploy --image IMAGE_URL --no-cpu-throttling ##always cpu responding 
+
 
       - name: Show Output
         run: echo ${{ steps.frenz.outputs.url }}
