@@ -44,7 +44,7 @@ jobs: # Define jobs to run
             --platform managed \
             --allow-unauthenticated \
             --no-cpu-throttling \
-            --trigger-http \
+            --log-http \
             --min-instances 1
 
 
