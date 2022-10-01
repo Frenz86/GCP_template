@@ -25,59 +25,50 @@ class Feature_type(BaseModel):
     feature3 : float = 3.0
     feature4 : float = 3.0
 
-from ray import serve
-@serve.deployment(route_prefix="/")
-@serve.ingress(app)
-class FastAPIDeployment:
-    @app.on_event("startup") #define event handlers (functions) that need to be executed before the application starts up
-    def load_model(self):
-        global model
-        model = joblib.load("iris.pkl")
+@app.on_event("startup") #define event handlers (functions) that need to be executed before the application starts up
+def load_model():
+    global model
+    model = joblib.load("iris.pkl")
 
 
-    @app.get("/")
-    def home(self,request: Request):
-        return templates.TemplateResponse("index.html", {"request": request})
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
-    @app.get("/get")
-    def read_root(self):
-        return {"Hello": "World"}
+@app.get("/get")
+def read_root():
+    return {"Hello": "World"}
 
 
-    @app.get("/plot")
-    def loadplot(self):
-        file = open('dog.jpg', mode="rb")
-        return StreamingResponse(file, media_type="image/png")
+@app.get("/plot")
+def loadplot():
+    file = open('dog.jpg', mode="rb")
+    return StreamingResponse(file, media_type="image/png")
 
-    @app.get("/predict", response_class=HTMLResponse)
-    async def predict_get(self,data: Feature_type= Depends()):              # depends() input nelle celle
-        try:
-            data = pd.DataFrame(data)
-            data = data.T
-            data.rename(columns=data.iloc[0], inplace = True)
-            data= data.iloc[1:] #must have array
-            
-            y_pred = list(map(lambda x: classes[x], model.predict(data).tolist()))[0]
-            return JSONResponse(y_pred)
-        except:
-            raise HTTPException(status_code=404, detail="error") 
+@app.get("/predict", response_class=HTMLResponse)
+async def predict_get(data: Feature_type= Depends()):              # depends() input nelle celle
+    try:
+        data = pd.DataFrame(data)
+        data = data.T
+        data.rename(columns=data.iloc[0], inplace = True)
+        data= data.iloc[1:] #must have array
+        
+        y_pred = list(map(lambda x: classes[x], model.predict(data).tolist()))[0]
+        return JSONResponse(y_pred)
+    except:
+        raise HTTPException(status_code=404, detail="error") 
 
-    @app.post("/predict", response_class=HTMLResponse)
-    #async def predict_post(data: Feature_type= Depends()):
-    async def predict_post(self,data: Feature_type):
-        try:
-            data = pd.DataFrame(data).T
-            data.rename(columns=data.iloc[0], inplace = True)
-            data= data.iloc[1:] #must have array
-            y_pred = list(map(lambda x: classes[x], model.predict(data).tolist()))[0]
-            return JSONResponse(y_pred)
-        except:
-            raise HTTPException(status_code=404, detail="error") 
-
-####################################################################################
-# 2: Deploy the deployment.
-serve.start()
-FastAPIDeployment.deploy()
+@app.post("/predict", response_class=HTMLResponse)
+#async def predict_post(data: Feature_type= Depends()):
+async def predict_post(data: Feature_type):
+    try:
+        data = pd.DataFrame(data).T
+        data.rename(columns=data.iloc[0], inplace = True)
+        data= data.iloc[1:] #must have array
+        y_pred = list(map(lambda x: classes[x], model.predict(data).tolist()))[0]
+        return JSONResponse(y_pred)
+    except:
+        raise HTTPException(status_code=404, detail="error") 
 
 
 if __name__ == "__main__":
