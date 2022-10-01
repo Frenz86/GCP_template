@@ -5,3 +5,4 @@ fastapi
 scikit-learn
 gunicorn
 pandas
+ray
