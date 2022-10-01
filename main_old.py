@@ -25,6 +25,7 @@ class Feature_type(BaseModel):
     feature3 : float = 3.0
     feature4 : float = 3.0
 
+from ray import serve
 @serve.deployment(route_prefix="/")
 @serve.ingress(app)
 class FastAPIDeployment:
@@ -72,6 +73,11 @@ class FastAPIDeployment:
             return JSONResponse(y_pred)
         except:
             raise HTTPException(status_code=404, detail="error") 
+
+####################################################################################
+# 2: Deploy the deployment.
+serve.start()
+FastAPIDeployment.deploy()
 
 
 if __name__ == "__main__":
