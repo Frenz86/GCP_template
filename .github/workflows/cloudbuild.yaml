@@ -45,7 +45,7 @@ jobs: # Define jobs to run
             --allow-unauthenticated \
             --no-cpu-throttling \
             --log-http \
-            --min-instances 1
+            --min-instances 0
 
 
 
